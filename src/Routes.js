@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 export default function Routes() {
 
     const apiAddress = 'https://data.mongodb-api.com/app/data-svcet/endpoint/data/v1/action';
-    const apiKey = 'Vsd86lGcTYsPaTZ1YKctSUherU8iSgMbvaylHRnVQLVFFGAyDWdkCZagKnKhuMSy';
+    const apiKey = '{PUT YOUR MONGODB API KEY HERE}';
     const apiDB = 'signupsignin';
 
     return (
