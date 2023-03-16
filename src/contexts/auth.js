@@ -13,7 +13,7 @@ export default function AuthProvider({children}){
     const navigation = useNavigation()
 
     const apiAddress = 'https://data.mongodb-api.com/app/data-svcet/endpoint/data/v1/action';
-    const apiKey = '{PUT YOUR API KEY HERE}';
+    const apiKey = 'DJsCU6o6u6cpc7HWBTewt3QNjZTUEUuTXMkRZBFaLQIP0NjkMNJtjptFrmsxxqBp';
     const apiDB = 'signupsignin';
 
     function signIn(emailAddress, password) {
