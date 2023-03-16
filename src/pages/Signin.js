@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet,
     View,
@@ -8,51 +8,43 @@ import {
     ActivityIndicator
 } from 'react-native';
 
-import md5 from "react-native-md5";
+import { AuthContext } from '../contexts/auth';
 
-export default function Login( {navigation, route} ) {
-    
-    const [emailAddress, setEmailAddress] = useState(route.params.emailAddress);
-    const [password, setPassword] = useState('');
-    const [incorrectCredentials, setIncorrectCredentials] = useState(false);
-    const [buttonDisabled, setButtonDisabled] = useState(false);
 
-    const Authenticate = () => {
-        setButtonDisabled(true);
-        errors = 0;
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                "api-key": route.params.apiKey,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "dataSource": "App",
-                "database": route.params.apiDB,
-                "collection": "users",
-                "filter": {
-                    "emailAddress": emailAddress,
-                    "password": md5.hex_md5(password)
-                }
-            }),
-            redirect: 'follow'
-        };
-        fetch(route.params.apiAddress + '/findOne', requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                if (response.document !== null) {
-                    setIncorrectCredentials(false);
-                    setButtonDisabled(false);
-                    navigation.navigate('Authenticated',{ emailAddress: emailAddress })
-                } else {
-                    errors++;
-                    setIncorrectCredentials(true);
-                    setButtonDisabled(false);
+export default function Login({ navigation, route }) {
 
-                }
-            })
-            .catch(error => console.log('error', error));
-    };
+    const [emailAddress, setEmailAddress] = useState(route.params.emailAddress)
+    const [password, setPassword] = useState('')
+
+    const [isAuthenticating, setIsAuthenticating] = useState(false)
+    const [incorrectCredentials, setIncorrectCredentials] = useState(false)
+
+    const { signIn, status, user } = useContext(AuthContext)
+
+    function handleSignIn() {
+        setIncorrectCredentials(false)
+        setIsAuthenticating(true)
+        signIn(emailAddress, password)
+    }
+
+    useEffect(() => {
+
+        if(status == 1){
+            // Authenticating
+        }
+
+        if(status == 2){
+            // Authenticated
+            setIsAuthenticating(false)
+        }
+
+        if(status == 3){
+            // Incorrect credentials
+            setIncorrectCredentials(true)
+            setIsAuthenticating(false)
+        }
+
+    }, [status])
 
     return (
         <View style={styles.container}>
@@ -60,10 +52,10 @@ export default function Login( {navigation, route} ) {
                 <Text style={styles.titleText}>Welcome back</Text>
             </View>
             <View style={styles.formBox}>
-                <TextInput style={[styles.formField,incorrectCredentials ? styles.formFieldInvalid : styles.formFieldNormal]} placeholder="E-mail address" onChangeText={(thisValue) => { setEmailAddress(thisValue); setIncorrectCredentials(false) } } value={emailAddress}></TextInput>
-                <TextInput style={[styles.formField,incorrectCredentials ? styles.formFieldInvalid : styles.formFieldNormal]} placeholder="Password" secureTextEntry={true} onChangeText={(thisValue) => { setPassword(thisValue); setIncorrectCredentials(false) } } value={password}></TextInput>
-                <TouchableOpacity style={[styles.formButtonPrimary, buttonDisabled ? styles.formButtonPrimaryDisabled : styles.formButtonPrimaryNormal]}>
-                    <Text style={styles.formButtonPrimaryText} onPress={() => buttonDisabled ? '' : Authenticate()}>{buttonDisabled ? <ActivityIndicator color="#7e1ab0" /> : 'Sign in'}</Text>
+                <TextInput style={[styles.formField, incorrectCredentials ? styles.formFieldInvalid : styles.formFieldNormal]} placeholder="E-mail address" onChangeText={(thisValue) => setEmailAddress(thisValue)} value={emailAddress}></TextInput>
+                <TextInput style={[styles.formField, incorrectCredentials ? styles.formFieldInvalid : styles.formFieldNormal]} placeholder="Password" secureTextEntry={true} onChangeText={(thisValue) => setPassword(thisValue)} value={password}></TextInput>
+                <TouchableOpacity style={[styles.formButtonPrimary, isAuthenticating ? styles.formButtonPrimaryDisabled : styles.formButtonPrimaryNormal]}>
+                    <Text style={styles.formButtonPrimaryText} onPress={() => isAuthenticating ? '' : handleSignIn()}>{isAuthenticating ? <ActivityIndicator color="#7e1ab0" /> : 'Sign in'}</Text>
                 </TouchableOpacity>
                 <Text style={styles.orText}>or</Text>
                 <TouchableOpacity style={styles.formButtonSecondary} onPress={() => navigation.navigate('Signup')}>

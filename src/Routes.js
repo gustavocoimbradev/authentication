@@ -1,34 +1,42 @@
+import React, {useContext} from 'react';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Authenticated from './pages/Authenticated';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
+
+import { AuthContext } from './contexts/auth';
 
 export default function Routes() {
 
-    const apiAddress = 'https://data.mongodb-api.com/app/data-svcet/endpoint/data/v1/action';
-    const apiKey = '{PUT YOUR MONGODB API KEY HERE}';
-    const apiDB = 'signupsignin';
+    const { status } = useContext(AuthContext)
+
+    if(status == 2){
+        initialRouteName = 'Authenticated'
+    } else {
+        initialRouteName = 'Signin'
+    }
 
     return (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName={initialRouteName}>
 
             <Stack.Screen
 
                 name="Signin"
                 component={Signin}
                 options={{ headerShown: false }}
-                initialParams={{ apiAddress: apiAddress, apiKey: apiKey, apiDB: apiDB }}
+                initialParams={{ }}
 
             />
 
             <Stack.Screen
                 name="Signup"
                 component={Signup}
-                options={{ headerShown: false }}
-                initialParams={{ apiAddress: apiAddress, apiKey: apiKey, apiDB: apiDB }}
+                options={{ headerShown: false, default: true }}
+                initialParams={{ }}
 
             />
 
@@ -36,7 +44,7 @@ export default function Routes() {
                 name="Authenticated"
                 component={Authenticated}
                 options={{ headerShown: false }}
-                initialParams={{ apiAddress: apiAddress, apiKey: apiKey, apiDB: apiDB }}
+                initialParams={{ }}
 
             />
 

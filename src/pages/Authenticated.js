@@ -1,58 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
+
+import { AuthContext } from '../contexts/auth';
 
 export default function Authenticated({ navigation, route }) {
 
-    const [emailAddress, setEmailAddress] = useState('');
-    const [welcome, setWelcome] = useState('Hi, ...');
+    const [isDeauthenticating, setIsDeauthenticating] = useState(false)
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            "api-key": route.params.apiKey,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "dataSource": "App",
-            "database": route.params.apiDB,
-            "collection": "users",
-            "filter": {
-                "emailAddress": route.params.emailAddress
-            }
-        }),
-        redirect: 'follow'
-    };
-    fetch(route.params.apiAddress + '/findOne', requestOptions)
-        .then(response => response.json())
-        .then(response => {
-            if (response.document !== null) {
+    const { signOut, user, status } = useContext(AuthContext)
 
-                setFirstName(response.document.firstName);
-                setLastName(response.document.lastName);
-                setEmailAddress(response.document.emailAddress);
+    const titleText = 'Welcome, ' + user.firstName + ' ' + user.lastName
 
-                setWelcome('Hi, ' + response.document.firstName + ' ' + response.document.lastName)
 
-            } else {
-                navigation.navigate('Signin', { emailAddress: emailAddress });
-            }
-        })
-        .catch(error => console.log('error', error));
+
+    function handleSignOut() {
+
+        if (!isDeauthenticating) {
+            setIsDeauthenticating(true)
+            signOut()
+        }
+
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.titleBox}>
-                <Text style={styles.titleText}>{welcome}</Text>
+                <Text style={styles.titleText}>{titleText}</Text>
             </View>
             <View style={styles.content}>
-                <Text style={styles.contentText}>This is a simple exemple of a <Text style={styles.contentTextSpecial}>signup and signin</Text> code made using <Text style={styles.contentTextSpecial}>React Native</Text> and <Text style={styles.contentTextSpecial}>MongoDB</Text>.</Text>   
-                <TouchableOpacity style={styles.contentButtonLogout} onPress={() => navigation.navigate('Signin', { authenticated: false} )}>
-                    <Text style={styles.contentButtonLogoutText}>Click here to log out</Text>
+                <Text style={styles.contentText}>This is a simple exemple of a <Text style={styles.contentTextSpecial}>signup and signin</Text> code made using <Text style={styles.contentTextSpecial}>React Native</Text> and <Text style={styles.contentTextSpecial}>MongoDB</Text>.</Text>
+                <TouchableOpacity style={styles.contentButtonLogout} onPress={() => handleSignOut()}>
+
+                    <Text style={styles.contentButtonLogoutText}>{isDeauthenticating ? <ActivityIndicator color="#7e1ab0" /> : 'Click here to log out'}</Text>
+
                 </TouchableOpacity>
             </View>
         </View>
@@ -100,6 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderColor: '#57117a',
     },
+
     contentButtonLogoutText: {
         color: '#7e1ab0',
         fontSize: 20,
