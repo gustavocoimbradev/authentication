@@ -26,7 +26,7 @@ export default function Login({ navigation, route }) {
     const [validPassword, setValidPassword] = useState(true);
     const [buttonDisabled, setButtonDisabled] = useState(false);
 
-    const [ apiAddress, apiKey, apiDB ] = useContext(AuthContext)
+    const { apiAddress, apiKey, apiDB } = useContext(AuthContext)
 
     // Validate the fields
     const validateFields = () => {
