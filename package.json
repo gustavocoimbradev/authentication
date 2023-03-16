@@ -1,7 +1,7 @@
 {
   "name": "signup-signin",
   "version": "1.0.0",
-  "homepage": "http://gustavocoimbradev.github.io/signup-signin",
+  "homepage": "https://gustavocoimbradev.github.io/signup-signin/",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -27,5 +27,5 @@
     "@babel/core": "^7.20.0",
     "gh-pages": "^5.0.0"
   },
-  "private": true
+  "private": false
 }
