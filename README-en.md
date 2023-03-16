@@ -1,4 +1,4 @@
-## User Authentication using React Native and MongoDB
+# User Authentication using React Native and MongoDB
 
 ## 📸 Screenshots
 
