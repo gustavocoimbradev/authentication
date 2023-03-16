@@ -13,7 +13,7 @@ import { AuthContext } from '../contexts/auth';
 
 export default function Login({ navigation, route }) {
 
-    const [emailAddress, setEmailAddress] = useState(route.params.emailAddress)
+    const [emailAddress, setEmailAddress] = useState('')
     const [password, setPassword] = useState('')
 
     const [isAuthenticating, setIsAuthenticating] = useState(false)

@@ -7,7 +7,7 @@ export const AuthContext = createContext()
 
 export default function AuthProvider({children}){
 
-    const [user, setUser] = useState()
+    const [user, setUser] = useState('')
     const [status, setStatus] = useState(0) // Idle
 
     const navigation = useNavigation()
@@ -24,7 +24,8 @@ export default function AuthProvider({children}){
             method: 'POST',
             headers: {
                 "api-key": apiKey,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
             },
             body: JSON.stringify({
                 "dataSource": "App",
