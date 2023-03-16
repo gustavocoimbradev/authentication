@@ -63,7 +63,7 @@ export default function AuthProvider({children}){
 
     }
 
-    values = {
+    const values = {
         apiAddress: apiAddress,
         signIn,
         signOut,

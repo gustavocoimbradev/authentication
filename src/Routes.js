@@ -14,6 +14,8 @@ export default function Routes() {
 
     const { status } = useContext(AuthContext)
 
+    let initialRouteName
+
     if(status == 2){
         initialRouteName = 'Authenticated'
     } else {
