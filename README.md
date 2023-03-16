@@ -1,2 +1,2 @@
-[Read this page in English](http....README.md)
-[Leia esta página em português](http....README-pt.md)
+[Read this page in English](README-en.md)
+[Leia esta página em português](README-pt.md)
