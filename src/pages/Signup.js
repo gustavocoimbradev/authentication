@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     StyleSheet,
     View,
@@ -10,6 +10,8 @@ import {
 
 import md5 from "react-native-md5";
 import { validate } from "react-email-validator";
+
+import { AuthContext } from '../contexts/auth';
 
 export default function Login({ navigation, route }) {
 
@@ -23,6 +25,8 @@ export default function Login({ navigation, route }) {
     const [validEmailAddress, setValidEmailAddress] = useState(true);
     const [validPassword, setValidPassword] = useState(true);
     const [buttonDisabled, setButtonDisabled] = useState(false);
+
+    const [ apiAddress, apiKey, apiDB ] = useContext(AuthContext)
 
     // Validate the fields
     const validateFields = () => {
@@ -49,12 +53,12 @@ export default function Login({ navigation, route }) {
                 const requestOptions = {
                     method: 'POST',
                     headers: {
-                        "api-key": route.params.apiKey,
+                        "Authorization": "Bearer "+apiKey,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
                         "dataSource": "App",
-                        "database": route.params.apiDB,
+                        "database": apiDB,
                         "collection": "users",
                         "filter": {
                             "emailAddress": emailAddress
@@ -62,7 +66,7 @@ export default function Login({ navigation, route }) {
                     }),
                     redirect: 'follow'
                 };
-                fetch(route.params.apiAddress + '/findOne', requestOptions)
+                fetch(apiAddress + '/findOne', requestOptions)
                     .then(response => response.json())
                     .then(response => {
                         if (response.document !== null) {
@@ -113,12 +117,12 @@ export default function Login({ navigation, route }) {
         const requestOptions = {
             method: 'POST',
             headers: {
-                "api-key": route.params.apiKey,
+                "api-key": apiKey,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 "dataSource": "App",
-                "database": route.params.apiDB,
+                "database": apiDB,
                 "collection": "users",
                 "document": {
                     "firstName": firstName,
@@ -129,7 +133,7 @@ export default function Login({ navigation, route }) {
             }),
             redirect: 'follow'
         };
-        fetch(route.params.apiAddress + '/insertOne', requestOptions)
+        fetch(apiAddress + '/insertOne', requestOptions)
             .then(response => response.json())
             .then(response => {
                 if (response.insertedId.length > 0) {

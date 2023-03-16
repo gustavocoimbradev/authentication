@@ -23,7 +23,7 @@ export default function AuthProvider({children}){
         const requestOptions = {
             method: 'POST',
             headers: {
-                "api-key": apiKey,
+                "Authorization": "Bearer "+apiKey,
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*"
             },
@@ -66,6 +66,8 @@ export default function AuthProvider({children}){
 
     const values = {
         apiAddress: apiAddress,
+        apiKey: apiKey,
+        apiDB: apiDB,
         signIn,
         signOut,
         user,
