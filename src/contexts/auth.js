@@ -23,7 +23,7 @@ export default function AuthProvider({children}){
         const requestOptions = {
             method: 'POST',
             headers: {
-                "Authorization": "Bearer "+apiKey,
+                "api-key": apiKey,
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*"
             },
@@ -41,10 +41,12 @@ export default function AuthProvider({children}){
         fetch(apiAddress + '/findOne', requestOptions)
             .then(response => response.json())
             .then(response => {
+
                 if (response.document !== null) {
 
                     setStatus(2) // Authenticated
                     setUser(response.document)
+
                     navigation.navigate('Authenticated')
 
                 } else {

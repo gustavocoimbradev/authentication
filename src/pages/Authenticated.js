@@ -15,9 +15,15 @@ export default function Authenticated({ navigation, route }) {
 
     const { signOut, user, status } = useContext(AuthContext)
 
+    useEffect(() => {
+
+        if(status !== 2){
+            navigation.navigate('Signin')
+        }
+
+    }, [status])
+
     const titleText = 'Welcome, ' + user.firstName + ' ' + user.lastName
-
-
 
     function handleSignOut() {
 

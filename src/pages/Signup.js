@@ -53,7 +53,7 @@ export default function Login({ navigation, route }) {
                 const requestOptions = {
                     method: 'POST',
                     headers: {
-                        "Authorization": "Bearer "+apiKey,
+                        "api-key": apiKey,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
