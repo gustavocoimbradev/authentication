@@ -1,4 +1,4 @@
-## User Authentication using React Native and MongoDB
+# User Authentication using React Native and MongoDB
 
 ## 📸 Screenshots
 
@@ -11,7 +11,7 @@
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/gsttvlima/signup-signin/issues).
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](../../issues).
 
 ## ✨ Show your support
 
